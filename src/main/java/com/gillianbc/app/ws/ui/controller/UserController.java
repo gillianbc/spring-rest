@@ -1,15 +1,21 @@
 package com.gillianbc.app.ws.ui.controller;
 
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gillianbc.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.gillianbc.app.ws.ui.model.response.UserRest;
 
 @RestController
@@ -17,12 +23,12 @@ import com.gillianbc.app.ws.ui.model.response.UserRest;
 public class UserController {
 	
 	@GetMapping(path="{userId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public UserRest getUser(@PathVariable String userId) {
+	public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
 		UserRest userRest =  new UserRest();
 		userRest.setFirstName("Hugh");
 		userRest.setLastName("Jass");
 		userRest.setEmail("hugh@gmail.com");
-		return userRest;
+		return new ResponseEntity<UserRest>(userRest, HttpStatus.OK);
 	}
 	
 	// You can use: required = false   
@@ -35,9 +41,15 @@ public class UserController {
 		return "Get users method was called with page: " + page + " limit: " + limit ;
 	}
 	
-	@PostMapping
-	public String createUser() {
-		return "Create user method was called";
+	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public ResponseEntity<UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel userDetailsRequest) {
+		UserRest userRest =  new UserRest();
+		userRest.setFirstName(userDetailsRequest.getFirstName());
+		userRest.setLastName(userDetailsRequest.getLastName());
+		userRest.setEmail(userDetailsRequest.getEmail());
+		userRest.setPassword(userDetailsRequest.getPassword());
+		return new ResponseEntity<UserRest>(userRest, HttpStatus.CREATED);
 	}
 	
 	@PutMapping
