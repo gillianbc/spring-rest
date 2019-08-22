@@ -1,4 +1,4 @@
-# Spring REST
+# Spring Boot :boot: REST
 
 A quick start to building your REST API with Spring Boot and Spring MVC
 
