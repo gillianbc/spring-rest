@@ -20,6 +20,7 @@ Also see https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_
 ## Controller
 There is a Controller class for the REST endpoints for GET, POST, PUT, DELETE
 ## Model
-There is a RequestModel class for the incoming requests which handles the validation
+There is a RequestModel class for the incoming requests which handles the validation.
+
 There is a ResponseModel class for the persisted entity
 

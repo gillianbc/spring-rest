@@ -1,5 +1,9 @@
 package com.gillianbc.app.ws.ui.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -22,13 +26,16 @@ import com.gillianbc.app.ws.ui.model.response.UserRest;
 @RequestMapping("users")  //http://localhost:8080/users
 public class UserController {
 	
-	@GetMapping(path="{userId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	// in-memory data store
+	Map<String, UserRest> users;
+	
+	@GetMapping(path="{userId}", 
+			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
-		UserRest userRest =  new UserRest();
-		userRest.setFirstName("Hugh");
-		userRest.setLastName("Jass");
-		userRest.setEmail("hugh@gmail.com");
-		return new ResponseEntity<UserRest>(userRest, HttpStatus.OK);
+		if (users != null && users.containsKey(userId)) {
+			return new ResponseEntity<UserRest>(users.get(userId), HttpStatus.OK);
+		} else 
+			return new ResponseEntity<UserRest>(HttpStatus.NO_CONTENT);
 	}
 	
 	// You can use: required = false   
@@ -49,6 +56,11 @@ public class UserController {
 		userRest.setLastName(userDetailsRequest.getLastName());
 		userRest.setEmail(userDetailsRequest.getEmail());
 		userRest.setPassword(userDetailsRequest.getPassword());
+		String userId = UUID.randomUUID().toString();
+		userRest.setUserId(userId);
+		if (users == null) 
+			users = new HashMap<>();
+		users.put(userId, userRest);
 		return new ResponseEntity<UserRest>(userRest, HttpStatus.CREATED);
 	}
 	
