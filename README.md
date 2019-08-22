@@ -6,6 +6,8 @@ From my Udemy Course:  https://www.udemy.com/course/restful-web-services-with-sp
 
 Started August 2019 :sun_with_face:
 
+A little REST API using Spring Boot so you get a nice little Tomcat webserver built in.  See the resources folder for a postman collection of sample requests.
+
 Course is fine as a reminder, however there is little explanation of what is happening, there are no student exercises and no pdf or resources to download.
 It was free, so no complaints there.
 The author does have a useful source of resources, such as cheat sheets on http://appsdeveloperblog.com/
