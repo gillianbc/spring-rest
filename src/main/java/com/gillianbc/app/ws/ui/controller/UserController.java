@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties.Build;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -74,8 +75,14 @@ public class UserController {
 		return updatedUserDetails;
 	}
 	
-	@DeleteMapping
-	public String deleteUser() {
-		return "Delete user method was called";
+	@DeleteMapping(path="{userId}")
+	public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
+		if (users.get(userId) != null) {
+			users.remove(userId);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.noContent().build();
 	}
 }
