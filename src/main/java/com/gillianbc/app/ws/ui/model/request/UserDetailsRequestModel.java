@@ -7,9 +7,11 @@ import javax.validation.constraints.Size;
 public class UserDetailsRequestModel {
 	
 	@NotNull(message="Must have a first name")
+	@Size(min=2, message="Must be 2 or longer")
 	private String firstName;
 	
 	@NotNull(message="Must have a last name")
+	@Size(min=2, message="Must be 2 or longer")
 	private String lastName;
 	
 	//  See https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#validator-defineconstraints-spec

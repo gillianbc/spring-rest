@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gillianbc.app.ws.ui.model.request.UpdateUserDetailsRequestModel;
 import com.gillianbc.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.gillianbc.app.ws.ui.model.response.UserRest;
 
@@ -50,12 +51,12 @@ public class UserController {
 	
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
 			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel userDetailsRequest) {
+	public ResponseEntity<UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel requestBody) {
 		UserRest userRest =  new UserRest();
-		userRest.setFirstName(userDetailsRequest.getFirstName());
-		userRest.setLastName(userDetailsRequest.getLastName());
-		userRest.setEmail(userDetailsRequest.getEmail());
-		userRest.setPassword(userDetailsRequest.getPassword());
+		userRest.setFirstName(requestBody.getFirstName());
+		userRest.setLastName(requestBody.getLastName());
+		userRest.setEmail(requestBody.getEmail());
+		userRest.setPassword(requestBody.getPassword());
 		String userId = UUID.randomUUID().toString();
 		userRest.setUserId(userId);
 		if (users == null) 
@@ -64,9 +65,13 @@ public class UserController {
 		return new ResponseEntity<UserRest>(userRest, HttpStatus.CREATED);
 	}
 	
-	@PutMapping
-	public String updateUser() {
-		return "Update user method was called";
+	@PutMapping(path="{userId}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public UserRest updateUser(@PathVariable String userId,@Valid @RequestBody UpdateUserDetailsRequestModel requestBody) {
+		UserRest updatedUserDetails = users.get(userId);
+		updatedUserDetails.setFirstName(requestBody.getFirstName());
+		updatedUserDetails.setLastName(requestBody.getLastName());
+		return updatedUserDetails;
 	}
 	
 	@DeleteMapping
